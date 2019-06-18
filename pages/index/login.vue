@@ -34,6 +34,8 @@
 <script>
 	import { mapState, mapMutations  } from 'vuex'
 	import Helper from '../../common/helper.js'
+	import User from '../../common/user.js'
+	
 	export default{
 		data(){
 			return{
@@ -55,23 +57,39 @@
 					console.log("手机号码格式错误");
 					return;
 				}
+				
 				// if(!Helper.checkVerifyCode(verifyCode)){
 				// 	console.log("验证码格式错误");
 				// 	return;
 				// }
+				
 				verifyCode = "480971";
+				
 				//api请求数据
 				uni.request({
-					url:me.APIurl+"users/LoginParent",
+					url:me.$APIurl+"users/LoginParent",
 					method:"POST",
 					data:{
-						  "modelId": me.modelId,
+						  "modelId": me.$modelId,
 						  "mobile": tel,
 						  "verificationCode": verifyCode						
 					},
 					success(res) {
 						if (res.statusCode == 200 && res.data.msg == "ok") {
-							this.login()
+							const userID = res.data.data._id.toString();
+							me.login();
+							User.addUser(userID,res.data)
+							me.$curUserID = userID;
+							// 15617719878 5c8b7a65efb6c84c060f4087
+							// let resouse = User.getUsers(userID)
+							uni.reLaunch({
+								url:'../home/home'
+							})
+
+							
+						
+
+							
 						}else{
 							
 						}
@@ -81,6 +99,10 @@
 			// 获取验证码的方法要尽快写好！
 		},
 		onShow() {
+			// let res = User.getUsers('5adeb1e6311e12ada1033b9c')
+			// console.log(res)
+			// console.log(this.hasLogin)
+
 		}
 	}
 </script>
