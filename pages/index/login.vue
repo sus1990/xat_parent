@@ -83,12 +83,8 @@
 							// 15617719878 5c8b7a65efb6c84c060f4087
 							// let resouse = User.getUsers(userID)
 							uni.reLaunch({
-								url:'../home/home'
+								url:'../index/index'
 							})
-
-							
-						
-
 							
 						}else{
 							
